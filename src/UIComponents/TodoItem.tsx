@@ -1,47 +1,79 @@
-import * as React from "react";
+import { useState } from "react";
 import Accordion from "@mui/material/Accordion";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import Typography from "@mui/material/Typography";
-import { Box, Button, Stack } from "@mui/material";
+import { Box, Button, IconButton, Stack, TextField } from "@mui/material";
 import DateRangeLine from "../assets/DateRangeLine";
 import BellLight from "../assets/BellLight";
 import HorizontalSwitchLight from "../assets/HorizontalSwitchLight";
 import StarLight from "../assets/StarLight";
 import { appColorsData } from "../themes/colorPallet";
-import ArrowForwardIcon from "../assets/ArrowForwardIcon";
 import RadioButton from "./RadioButton";
+import { TodoItemProp } from "../model";
 
-export default function TodoItem() {
-  const [selectedValue, setSelectedValue] = React.useState("");
+import styles from "./TodoItem.module.scss";
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSelectedValue(event.target.value);
+export default function TodoItem({
+  item,
+  handleOpenNewTaskCallBack,
+  showTextField,
+  handleAddNewTaskChange,
+  newTaskValue,
+  addAsFavCallBack,
+  markAsCompletedCallBack,
+}: TodoItemProp) {
+  const [expanded, setExpanded] = useState<string | false>(false);
+
+  const handleChangeAccordion =
+    (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
+      if (!showTextField) {
+        setExpanded(isExpanded ? panel : false);
+      }
+    };
+
+  const handleTextFieldChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    handleAddNewTaskChange(event?.target?.value);
   };
+
   return (
-    <div>
-      <Accordion defaultExpanded>
-        <AccordionSummary
-          aria-controls="panel1-content"
-          id="panel1-header"
-          sx={{
-            "& .MuiAccordionSummary-content": {
-              display: "flex",
-              flexDirection: "row",
-              justifyContent: "space-between",
-              alignItems: "center",
-            },
-          }}
-        >
-          <Stack flexDirection={"row"} alignItems={"center"}>
-            <RadioButton
-              checked={selectedValue === "a"}
-              onChange={handleChange}
-              value="a"
-              name="radio-buttons"
-              inputProps={{ "aria-label": "A" }}
+    <Accordion
+      expanded={showTextField || expanded === "panel1"}
+      onChange={handleChangeAccordion("panel1")}
+    >
+      <AccordionSummary
+        aria-controls="panel1-content"
+        id="panel1-header"
+        sx={{
+          "& .MuiAccordionSummary-content": {
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "space-between",
+            alignItems: "center",
+          },
+        }}
+      >
+        <Stack flexDirection={"row"} alignItems={"center"}>
+          <RadioButton
+            checked={item?.isSelected}
+            value="a"
+            onClick={() => markAsCompletedCallBack(item?.uniqueID ?? "")}
+            name="radio-buttons"
+            inputProps={{ "aria-label": "A" }}
+          />
+          {showTextField ? (
+            <TextField
+              id="standard-basic"
+              label="Standard"
+              variant="standard"
+              onChange={handleTextFieldChange}
+              value={newTaskValue}
             />
+          ) : (
             <Typography
+              className={item?.isSelected ? styles?.completed : ""}
               sx={{
                 fontFamily: "Roboto",
                 fontSize: "17px",
@@ -49,43 +81,48 @@ export default function TodoItem() {
                 color: appColorsData.primaryColor,
               }}
             >
-              Add a Task
+              {item?.todoTaskText}
             </Typography>
-          </Stack>
-          <StarLight />
-        </AccordionSummary>
-        <AccordionDetails
+          )}
+        </Stack>
+        <IconButton onClick={() => addAsFavCallBack(item?.uniqueID ?? "")}>
+          <StarLight className={item?.isAddedAsFav ? styles.addedToFav : ""} />
+        </IconButton>
+      </AccordionSummary>
+      <AccordionDetails
+        sx={{
+          "&.MuiAccordionDetails-root": {
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "space-between",
+            alignItems: "center",
+            boxShadow: "0 4px 8px -3px rgba(0, 0, 0, 0.25)",
+            borderRadius: "5px",
+            backgroundColor: "#faf9f8",
+            padding: "8px 17px 9px 29px",
+            height: "57px",
+          },
+        }}
+      >
+        <Box
           sx={{
-            "&.MuiAccordionDetails-root": {
-              display: "flex",
-              flexDirection: "row",
-              justifyContent: "space-between",
-              alignItems: "center",
-              boxShadow: "0 4px 8px -3px rgba(0, 0, 0, 0.25)",
-              backgroundColor: "#faf9f8",
-              padding: "8px 17px 9px 29px",
-              height: "57px",
-            },
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "flex-start",
+            alignItems: "center",
+            gap: "18px",
           }}
         >
-          <Box
+          <DateRangeLine
             sx={{
-              display: "flex",
-              flexDirection: "row",
-              justifyContent: "flex-start",
-              alignItems: "center",
-              gap: "18px",
+              width: "24px",
+              height: "24px",
             }}
-          >
-            <DateRangeLine
-              sx={{
-                width: "24px",
-                height: "24px",
-              }}
-            />
-            <BellLight />
-            <HorizontalSwitchLight />
-          </Box>
+          />
+          <BellLight />
+          <HorizontalSwitchLight />
+        </Box>
+        {showTextField && (
           <Button
             variant="contained"
             disableElevation
@@ -102,54 +139,12 @@ export default function TodoItem() {
                 backgroundColor: "#fff",
               },
             }}
+            onClick={() => handleOpenNewTaskCallBack(false)}
           >
             To add
           </Button>
-        </AccordionDetails>
-      </Accordion>
-      <Accordion>
-        <AccordionSummary
-          aria-controls="panel2-content"
-          id="panel2-header"
-          sx={{
-            "& .MuiAccordionSummary-content": {
-              display: "flex",
-              flexDirection: "row",
-              justifyContent: "flex-start",
-              alignItems: "center",
-              gap: "22px",
-            },
-          }}
-        >
-          <ArrowForwardIcon />
-          <Typography
-            sx={{
-              color: "#414141",
-              fontSize: "17px",
-              fontWeight: "bold",
-              fontFamily: "Roboto",
-            }}
-          >
-            Completed
-          </Typography>
-          <span
-            style={{
-              color: "#414141",
-              fontSize: "17px",
-              fontWeight: "300    ",
-              fontFamily: "Roboto",
-            }}
-          >
-            7
-          </span>
-        </AccordionSummary>
-        <AccordionDetails>
-          <Typography>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
-            malesuada lacus ex, sit amet blandit leo lobortis eget.
-          </Typography>
-        </AccordionDetails>
-      </Accordion>
-    </div>
+        )}
+      </AccordionDetails>
+    </Accordion>
   );
 }

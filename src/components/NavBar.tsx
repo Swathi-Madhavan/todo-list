@@ -1,4 +1,4 @@
-import { useId, useState } from "react";
+import { useId, useMemo, useState } from "react";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -25,6 +25,8 @@ import Feather from "../assets/Feather";
 import Settings from "../assets/Settings";
 import AppBarItem from "../UIComponents/AppBarItem";
 import TodoView from "./TodoView";
+import { TodoListDataStructure } from "../model";
+import { getTodoViewData } from "../Utils/comman";
 
 function getIcon(label: string) {
   switch (label) {
@@ -46,10 +48,24 @@ function getIcon(label: string) {
 }
 const drawerWidth = 240;
 
-export default function NavBar() {
+export default function NavBar({
+  data,
+  isOpenAddNewTask,
+  handleOpenNewTaskCallBack,
+  handleAddNewTaskChange,
+  newTaskValue,
+  addAsFavCallBack,
+  markAsCompletedCallBack,
+  competedData,
+}: TodoListDataStructure) {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [isClosing, setIsClosing] = useState<boolean>(false);
 
+  const todoViewData = useMemo(() => getTodoViewData(data, 1), [data]);
+  const completedViewData = useMemo(
+    () => getTodoViewData(competedData, 1),
+    [competedData]
+  );
   const id = useId();
   console.log("id", id);
   const handleDrawerClose = () => {
@@ -116,7 +132,7 @@ export default function NavBar() {
       <List>
         {["New list"].map((text) => (
           <ListItem key={text} disablePadding>
-            <ListItemButton>
+            <ListItemButton onClick={() => handleOpenNewTaskCallBack(true)}>
               <ListItemIcon>{getIcon(`prefix-${text}`)}</ListItemIcon>
               <ListItemText
                 primary={text}
@@ -218,7 +234,16 @@ export default function NavBar() {
         }}
       >
         <Toolbar />
-        <TodoView />
+        <TodoView
+          data={todoViewData}
+          isOpenAddNewTask={isOpenAddNewTask}
+          handleOpenNewTaskCallBack={handleOpenNewTaskCallBack}
+          handleAddNewTaskChange={handleAddNewTaskChange}
+          newTaskValue={newTaskValue}
+          addAsFavCallBack={addAsFavCallBack}
+          markAsCompletedCallBack={markAsCompletedCallBack}
+          competedData={completedViewData}
+        />
       </Box>
     </Box>
   );
