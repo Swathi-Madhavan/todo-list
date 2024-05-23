@@ -19,7 +19,7 @@ export type DataSource = Array<TodoViewData>;
 
 export interface TodoListDataStructure {
   data: DataSource;
-  competedData: DataSource;
+  competedData: TodoViewData;
   isOpenAddNewTask: boolean;
   handleOpenNewTaskCallBack: (status: boolean) => void;
   handleAddNewTaskChange: (newTask?: string) => void;
@@ -47,4 +47,15 @@ export interface TodoItemProp {
   newTaskValue?: string;
   addAsFavCallBack: (id: string) => void;
   markAsCompletedCallBack: (id: string) => void;
+}
+
+export interface TodoListStates {
+  todoLists: DataSource;
+  completedItems: TodoViewData;
+  isOpenAddNewTask: boolean;
+  newTaskValue?: string;
+}
+
+export interface CompletedItemProps{
+  completedItems: TodoViewData;
 }

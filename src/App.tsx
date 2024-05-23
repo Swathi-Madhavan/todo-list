@@ -1,26 +1,59 @@
-import React, { useState } from "react";
+import { useMemo } from "react";
 import "./App.css";
 import NavBar from "./components/NavBar";
-import { DataSource } from "./model";
 import { getTodoViewData } from "./Utils/comman";
 import { v4 as uuidv4 } from "uuid";
-import { MarkAsUnread } from "@mui/icons-material";
+import { useLocation } from "react-router-dom";
+import useApp from "./useApp";
 
 function App() {
-  const [todoLists, setTodoLists] = useState<DataSource>([[], []]);
-  const [completedItems, setCompletedItems] = useState<DataSource>([[], []]);
-  const [isOpenAddNewTask, setIsOpenAddNewTask] = useState<boolean>(false);
-  const [newTaskValue, setNewTaskValue] = useState<string | undefined>("");
+  const { pathname } = useLocation();
+
+  const pathName = useMemo(() => pathname.replace("/", ""), [pathname]);
+
+  const {
+    getCompletedItems,
+    getIsOpenAddNewTask,
+    getNewTaskValue,
+    getTodoListsData,
+    setCompletedItems,
+    setIsOpenAddNewTask,
+    setNewTaskValue,
+    setTodoListsRedux,
+  } = useApp();
+
+  const todoLists = useMemo(
+    () => getTodoListsData(pathName),
+    [getTodoListsData, pathName]
+  );
+
+  const importantTodoLists = useMemo(
+    () => getTodoListsData("important"),
+    [getTodoListsData]
+  );
+
+  const completedItems = useMemo(
+    () => getCompletedItems(pathName),
+    [getCompletedItems, pathName]
+  );
+  const isOpenAddNewTask = useMemo(
+    () => getIsOpenAddNewTask(pathName),
+    [getIsOpenAddNewTask, pathName]
+  );
+  const newTaskValue = useMemo(
+    () => getNewTaskValue(pathName),
+    [getNewTaskValue, pathName]
+  );
 
   function handleOpenNewTask(status: boolean) {
-    setIsOpenAddNewTask(status);
+    setIsOpenAddNewTask(pathName, status);
     if (status === false) {
       onAddTask();
     }
   }
 
   function updateTaskToTodoLists(newTask?: string) {
-    setNewTaskValue(newTask);
+    setNewTaskValue(pathName, newTask ?? "");
   }
 
   function onAddTask() {
@@ -36,8 +69,8 @@ function App() {
         todoTaskText: newTaskValue,
       });
 
-      setTodoLists([...todoLists, firstIndexData]);
-      setNewTaskValue("");
+      setTodoListsRedux(pathName, [...todoLists, firstIndexData]);
+      setNewTaskValue(pathName, "");
     }
   }
 
@@ -46,12 +79,45 @@ function App() {
 
     const firstIndexData = getTodoViewData(oldSTateData, 1);
 
-    const targetObj = firstIndexData?.findIndex((row) => row?.uniqueID === id);
+    const targetObjIndex = firstIndexData?.findIndex(
+      (row) => row?.uniqueID === id
+    );
 
-    if (targetObj >= 0) {
-      firstIndexData[targetObj].isAddedAsFav =
-        !firstIndexData[targetObj].isAddedAsFav;
-      setTodoLists([...todoLists, firstIndexData]);
+    if (targetObjIndex >= 0) {
+      const targetObj = firstIndexData[targetObjIndex];
+
+      firstIndexData[targetObjIndex].isAddedAsFav =
+        !firstIndexData[targetObjIndex].isAddedAsFav;
+
+      setTodoListsRedux(pathName, [...todoLists, firstIndexData]);
+      if (targetObj.isAddedAsFav) {
+        const importantTodoListsOldState = [...importantTodoLists];
+        const firstIndexDataOfImportantTodoList = getTodoViewData(
+          importantTodoListsOldState,
+          1
+        );
+        firstIndexDataOfImportantTodoList.push(targetObj);
+        setTodoListsRedux("important", [
+          ...importantTodoLists,
+          firstIndexDataOfImportantTodoList,
+        ]);
+      } else {
+        const importantTodoListsOldState = [...importantTodoLists];
+        const firstIndexDataOfImportantTodoList = getTodoViewData(
+          importantTodoListsOldState,
+          1
+        );
+        const exsitingIndex = firstIndexDataOfImportantTodoList?.findIndex(
+          (row) => row?.uniqueID === id
+        );
+        if (exsitingIndex >= 0) {
+          firstIndexDataOfImportantTodoList.splice(exsitingIndex, 1);
+          setTodoListsRedux("important", [
+            ...importantTodoLists,
+            firstIndexDataOfImportantTodoList,
+          ]);
+        }
+      }
     }
   }
 
@@ -63,12 +129,20 @@ function App() {
     const targetObj = firstIndexData?.findIndex((row) => row?.uniqueID === id);
 
     if (targetObj >= 0) {
-      firstIndexData[targetObj].isSelected =
-        !firstIndexData[targetObj].isSelected;
-      setTodoLists([...todoLists, firstIndexData]);
+      // firstIndexData[targetObj].isSelected =
+      //   !firstIndexData[targetObj].isSelected;
+
+      const prevCompletedItems = [...completedItems];
+      prevCompletedItems.push(firstIndexData[targetObj]);
+      console.log("prevCompletedItems", prevCompletedItems);
+      setCompletedItems(pathName, prevCompletedItems);
+
+      firstIndexData.splice(targetObj, 1);
+      setTodoListsRedux(pathName, [...todoLists, firstIndexData]);
     }
   }
 
+  console.log("app", completedItems);
   return (
     <div>
       <NavBar

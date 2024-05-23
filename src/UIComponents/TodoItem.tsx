@@ -62,6 +62,7 @@ export default function TodoItem({
             onClick={() => markAsCompletedCallBack(item?.uniqueID ?? "")}
             name="radio-buttons"
             inputProps={{ "aria-label": "A" }}
+            className={showTextField ? styles.addTop : ""}
           />
           {showTextField ? (
             <TextField
@@ -85,8 +86,17 @@ export default function TodoItem({
             </Typography>
           )}
         </Stack>
-        <IconButton onClick={() => addAsFavCallBack(item?.uniqueID ?? "")}>
-          <StarLight className={item?.isAddedAsFav ? styles.addedToFav : ""} />
+        <IconButton
+          disabled={showTextField}
+          onClick={() => addAsFavCallBack(item?.uniqueID ?? "")}
+        >
+          <StarLight
+            sx={{
+              filter:
+                "brightness(0) saturate(100%) invert(32%) sepia(33%) saturate(2318%) hue-rotate(193deg) brightness(101%) contrast(101%)",
+            }}
+            className={item?.isAddedAsFav ? styles.addedToFav : ""}
+          />
         </IconButton>
       </AccordionSummary>
       <AccordionDetails
