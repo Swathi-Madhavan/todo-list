@@ -1,4 +1,4 @@
-import { DataSource, TodoViewData } from "./model";
+import {  TodoViewData } from "./model";
 import {
   setAssignToMeTodoLists,
   setAssignedToMeCompletedItems,
@@ -53,7 +53,7 @@ export default function useApp() {
     }
   };
 
-  const setTodoListsRedux = (pathName: string, todoListsData: DataSource) => {
+  const setTodoListsRedux = (pathName: string, todoListsData: TodoViewData) => {
     if (pathName === "tasks") {
       dispatch(setTasksTodoLists(todoListsData));
     } else if (pathName === "planned") {

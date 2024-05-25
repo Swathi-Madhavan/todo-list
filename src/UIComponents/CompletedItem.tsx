@@ -7,12 +7,10 @@ import MuiAccordionSummary, {
 } from "@mui/material/AccordionSummary";
 import MuiAccordionDetails from "@mui/material/AccordionDetails";
 import Typography from "@mui/material/Typography";
-import { Directions, Height } from "@mui/icons-material";
 import { Box, IconButton } from "@mui/material";
 import TickIcon from "../assets/TickIcon";
 import StarLight from "../assets/StarLight";
 import { CompletedItemProps } from "../model";
-import { getTodoViewData } from "../Utils/comman";
 
 const Accordion = styled((props: AccordionProps) => (
   <MuiAccordion disableGutters elevation={0} square {...props} />
@@ -57,8 +55,6 @@ export default function CompletedItem({ completedItems }: CompletedItemProps) {
     (panel: string) => (event: React.SyntheticEvent, newExpanded: boolean) => {
       setExpanded(newExpanded ? panel : false);
     };
-
-  console.log("completedItems", completedItems);
 
   return (
     <div>

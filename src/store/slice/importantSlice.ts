@@ -1,8 +1,8 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import { DataSource, TodoListStates, TodoViewData } from "../../model";
+import { TodoListStates, TodoViewData } from "../../model";
 
 const initialState: TodoListStates = {
-  todoLists: [[], []],
+  todoLists: [],
   completedItems: [],
   isOpenAddNewTask: false,
   newTaskValue: "",
@@ -12,7 +12,7 @@ const importantSlice = createSlice({
   name: "important",
   initialState,
   reducers: {
-    setImportantTodoLists: (state, action: PayloadAction<DataSource>) => {
+    setImportantTodoLists: (state, action: PayloadAction<TodoViewData>) => {
       state.todoLists = action.payload;
     },
     setImportantCompletedItems: (state, action: PayloadAction<TodoViewData>) => {

@@ -26,7 +26,6 @@ import Settings from "../assets/Settings";
 import AppBarItem from "../UIComponents/AppBarItem";
 import TodoView from "./TodoView";
 import { TodoListDataStructure } from "../model";
-import { getTodoViewData } from "../Utils/comman";
 import { useLocation } from "react-router-dom";
 import styles from "./NavBar.module.scss";
 import { useNavigate } from "react-router-dom";
@@ -105,7 +104,7 @@ export default function NavBar({
     setActivePathName(getActivePathName(pathname));
   }, [pathname]);
 
-  const todoViewData = useMemo(() => getTodoViewData(data, 1), [data]);
+  const todoViewData = useMemo(() => data, [data]);
 
   const id = useId();
   console.log("id", id);
