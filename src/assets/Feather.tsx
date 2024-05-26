@@ -1,3 +1,4 @@
+import React from "react";
 import { createSvgIcon } from "@mui/material";
 
 const Feather = createSvgIcon(
@@ -11,23 +12,23 @@ const Feather = createSvgIcon(
     <path
       d="M3.125 12.5H21.875"
       stroke="#414141"
-      stroke-width="2"
-      stroke-linecap="round"
-      stroke-linejoin="round"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
     />
     <path
       d="M3.125 6.25H21.875"
       stroke="#414141"
-      stroke-width="2"
-      stroke-linecap="round"
-      stroke-linejoin="round"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
     />
     <path
       d="M3.125 18.75H21.875"
       stroke="#414141"
-      stroke-width="2"
-      stroke-linecap="round"
-      stroke-linejoin="round"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
     />
   </svg>,
   "Feather"

@@ -1,3 +1,4 @@
+import React from "react";
 import { createSvgIcon } from "@mui/material";
 
 const HomeLight = createSvgIcon(
@@ -15,8 +16,8 @@ const HomeLight = createSvgIcon(
     <path
       d="M24.1667 35V26C24.1667 25.4477 23.7189 25 23.1667 25H16.8333C16.281 25 15.8333 25.4477 15.8333 26V35"
       stroke="#2564CF"
-      stroke-linecap="round"
-      stroke-linejoin="round"
+      strokeLinecap="round"
+      strokeLinejoin="round"
     />
   </svg>,
   "HomeLight"

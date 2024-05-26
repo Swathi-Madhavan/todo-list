@@ -1,4 +1,4 @@
-import { useId, useMemo, useState, useEffect } from "react";
+import React, { useId, useMemo, useState, useEffect } from "react";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -26,9 +26,8 @@ import Settings from "../assets/Settings";
 import AppBarItem from "../UIComponents/AppBarItem";
 import TodoView from "./TodoView";
 import { TodoListDataStructure } from "../model";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import styles from "./NavBar.module.scss";
-import { useNavigate } from "react-router-dom";
 
 function getIcon(label: string) {
   switch (label) {

@@ -1,10 +1,8 @@
-import { useMemo } from "react";
-import "./App.css";
+import React, { useMemo } from "react";
 import NavBar from "./components/NavBar";
 import { v4 as uuidv4 } from "uuid";
 import { useLocation } from "react-router-dom";
 import useApp from "./useApp";
-import { TodoItemInfo } from "./model";
 
 function App() {
   const { pathname } = useLocation();

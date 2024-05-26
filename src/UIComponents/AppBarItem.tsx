@@ -3,6 +3,7 @@ import HomeLight from "../assets/HomeLight";
 import OrderLight from "../assets/OrderLight";
 import CollapseLight from "../assets/CollapseLight";
 import { appColorsData } from "../themes/colorPallet";
+import React from "react";
 
 export default function AppBarItem() {
   return (

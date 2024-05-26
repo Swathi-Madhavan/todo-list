@@ -1,3 +1,4 @@
+import React from "react";
 import { createSvgIcon } from "@mui/material";
 
 const BellLight = createSvgIcon(
@@ -15,7 +16,7 @@ const BellLight = createSvgIcon(
     <path
       d="M9.48148 19.1728C9.65953 19.948 10.0519 20.633 10.5976 21.1216C11.1434 21.6102 11.8121 21.875 12.5 21.875C13.1879 21.875 13.8566 21.6102 14.4024 21.1216C14.9481 20.633 15.3405 19.948 15.5185 19.1728"
       stroke="#414141"
-      stroke-linecap="round"
+      strokeLinecap="round"
     />
   </svg>,
   "BellLight"
