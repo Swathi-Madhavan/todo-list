@@ -27,11 +27,6 @@ function App() {
     [getTodoListsData, pathName]
   );
 
-  const importantTodoLists = useMemo(
-    () => getTodoListsData("important"),
-    [getTodoListsData]
-  );
-
   const completedItems = useMemo(
     () => getCompletedItems(pathName),
     [getCompletedItems, pathName]
@@ -71,19 +66,6 @@ function App() {
       setTodoListsRedux(pathName, oldStateData);
       setNewTaskValue(pathName, "");
     }
-  }
-
-  function updateOtherList(
-    routeName: string,
-    changedItemId: string,
-    objToBeUpdated: TodoItemInfo
-  ) {
-    const todoListsBasedOnPath = getTodoListsData(routeName);
-    const removedList = todoListsBasedOnPath?.filter(
-      (row) => row?.uniqueID !== changedItemId
-    );
-    removedList.push(objToBeUpdated);
-    setTodoListsRedux(pathName, removedList);
   }
 
   function addAsFav(id: string) {
