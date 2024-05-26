@@ -42,9 +42,9 @@ function getIcon(label: string) {
       return <User />;
     case "Tasks":
       return <AssignmentOutlinedIcon />;
-    case "prefix-New list":
+    case "prefix-New task":
       return <AddRoundLight />;
-    case "suffix-New list":
+    case "suffix-New task":
       return <ChatPlus />;
   }
 }
@@ -179,7 +179,7 @@ export default function NavBar({
       </List>
       <Divider />
       <List>
-        {["New list"].map((text) => (
+        {["New task"].map((text) => (
           <ListItem key={text} disablePadding>
             <ListItemButton onClick={() => handleOpenNewTaskCallBack(true)}>
               <ListItemIcon>{getIcon(`prefix-${text}`)}</ListItemIcon>
@@ -194,7 +194,6 @@ export default function NavBar({
                   },
                 }}
               />
-              <ListItemIcon>{getIcon(`suffix-${text}`)}</ListItemIcon>
             </ListItemButton>
           </ListItem>
         ))}

@@ -11,6 +11,7 @@ import { Box, IconButton } from "@mui/material";
 import TickIcon from "../assets/TickIcon";
 import StarLight from "../assets/StarLight";
 import { CompletedItemProps } from "../model";
+import { appColorsData } from "../themes/colorPallet";
 
 const Accordion = styled((props: AccordionProps) => (
   <MuiAccordion disableGutters elevation={0} square {...props} />
@@ -67,9 +68,6 @@ export default function CompletedItem({ completedItems }: CompletedItemProps) {
             backgroundColor: "#faf9f8",
             borderBottomColor: "black",
           },
-          "& .MuiSvgIcon-root": {
-            marginRight: "10px",
-          },
         }}
       >
         <AccordionSummary
@@ -81,7 +79,11 @@ export default function CompletedItem({ completedItems }: CompletedItemProps) {
             },
           }}
         >
-          <Typography>
+          <Typography
+            sx={{
+              marginRight: "10px",
+            }}
+          >
             Completed{" "}
             <span
               style={{
@@ -115,18 +117,24 @@ export default function CompletedItem({ completedItems }: CompletedItemProps) {
             >
               <Box
                 sx={{
-                  height: "22px",
-                  width: "179px",
+                  // height: "22px",
+                  width: "100%",
                   display: "flex",
                   flexDirection: "row",
-                  justifyContent: "space-evenly",
+                  justifyContent: "flex-start",
                   alignItems: "center",
+                  marginLeft: "16px",
                 }}
               >
-                <TickIcon />
+                <IconButton>
+                  {" "}
+                  <TickIcon />
+                </IconButton>
                 <Typography
                   sx={{
                     textDecoration: "line-through",
+                    textDecorationColor: appColorsData?.primaryColor,
+                    textTransform: "capitalize",
                   }}
                 >
                   {row?.todoTaskText}

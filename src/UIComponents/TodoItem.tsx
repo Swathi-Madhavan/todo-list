@@ -38,10 +38,26 @@ export default function TodoItem({
     handleAddNewTaskChange(event?.target?.value);
   };
 
+  const onKeyPress = (
+    event: React.KeyboardEvent<HTMLDivElement> | undefined
+  ) => {
+    if (event?.key === "Enter") {
+      handleOpenNewTaskCallBack(false);
+    }
+  };
+
   return (
     <Accordion
       expanded={showTextField || expanded === "panel1"}
       onChange={handleChangeAccordion("panel1")}
+      sx={{
+        borderRadius: "5px",
+        boxShadow: "rgba(100, 100, 111, 0.2) 0px 7px 29px 0px",
+
+        "&.MuiAccordion-root::before": {
+          backgroundColor: "transparent",
+        },
+      }}
     >
       <AccordionSummary
         aria-controls="panel1-content"
@@ -71,6 +87,7 @@ export default function TodoItem({
               variant="standard"
               onChange={handleTextFieldChange}
               value={newTaskValue}
+              onKeyDown={onKeyPress}
             />
           ) : (
             <Typography
@@ -80,6 +97,7 @@ export default function TodoItem({
                 fontSize: "17px",
                 fontWeight: "300",
                 color: appColorsData.primaryColor,
+                textTransform: "capitalize",
               }}
             >
               {item?.todoTaskText}

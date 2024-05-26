@@ -11,6 +11,7 @@ export interface TodoItemInfo {
   isAddedAsFav: boolean;
   todoTaskText?: string;
   uniqueID: string;
+  routeName: string;
 }
 
 export type TodoViewData = Array<TodoItemInfo>;
@@ -56,6 +57,6 @@ export interface TodoListStates {
   newTaskValue?: string;
 }
 
-export interface CompletedItemProps{
+export interface CompletedItemProps {
   completedItems: TodoViewData;
 }

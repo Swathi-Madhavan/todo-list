@@ -4,6 +4,7 @@ import NavBar from "./components/NavBar";
 import { v4 as uuidv4 } from "uuid";
 import { useLocation } from "react-router-dom";
 import useApp from "./useApp";
+import { TodoItemInfo } from "./model";
 
 function App() {
   const { pathname } = useLocation();
@@ -64,6 +65,7 @@ function App() {
         isSelected: false,
         uniqueID: uuidv4(),
         todoTaskText: newTaskValue,
+        routeName: pathName,
       });
 
       setTodoListsRedux(pathName, oldStateData);
@@ -71,34 +73,81 @@ function App() {
     }
   }
 
-  function addAsFav(id: string) {
-    const oldStateData = [...todoLists];
-
-    const targetObjIndex = oldStateData?.findIndex(
-      (row) => row?.uniqueID === id
+  function updateOtherList(
+    routeName: string,
+    changedItemId: string,
+    objToBeUpdated: TodoItemInfo
+  ) {
+    const todoListsBasedOnPath = getTodoListsData(routeName);
+    const removedList = todoListsBasedOnPath?.filter(
+      (row) => row?.uniqueID !== changedItemId
     );
+    removedList.push(objToBeUpdated);
+    setTodoListsRedux(pathName, removedList);
+  }
 
-    if (targetObjIndex >= 0) {
-      const targetObj = oldStateData[targetObjIndex];
+  function addAsFav(id: string) {
+    if (pathName !== "important") {
+      const oldStateData = [...todoLists];
+      const targetObjIndex = oldStateData?.findIndex(
+        (row) => row?.uniqueID === id
+      );
+      if (targetObjIndex >= 0) {
+        oldStateData[targetObjIndex].isAddedAsFav =
+          !oldStateData[targetObjIndex].isAddedAsFav;
 
-      oldStateData[targetObjIndex].isAddedAsFav =
-        !oldStateData[targetObjIndex].isAddedAsFav;
+        setTodoListsRedux(pathName, oldStateData);
 
-      setTodoListsRedux(pathName, oldStateData);
-      if (targetObj.isAddedAsFav) {
-        const importantTodoListsOldState = [...importantTodoLists];
-
-        importantTodoListsOldState.push(targetObj);
-        setTodoListsRedux("important", importantTodoListsOldState);
-      } else {
-        const importantTodoListsOldState = [...importantTodoLists];
-
-        const exsitingIndex = importantTodoListsOldState?.findIndex(
+        const importantTodoListData = [...getTodoListsData("important")];
+        const indexToBeUpdate = importantTodoListData?.findIndex(
           (row) => row?.uniqueID === id
         );
-        if (exsitingIndex >= 0) {
-          importantTodoListsOldState.splice(exsitingIndex, 1);
-          setTodoListsRedux("important", importantTodoListsOldState);
+        console.log("indexToBeUpdate", indexToBeUpdate);
+
+        if (indexToBeUpdate >= 0) {
+          console.log("splice");
+          importantTodoListData.splice(indexToBeUpdate, 0);
+          setTodoListsRedux(
+            "important",
+            importantTodoListData.filter(
+              (_, index) => index !== indexToBeUpdate
+            )
+          );
+        } else {
+          console.log("push");
+          importantTodoListData.push(oldStateData[targetObjIndex]);
+          setTodoListsRedux("important", importantTodoListData);
+        }
+      }
+    } else {
+      const oldStateData = [...todoLists];
+      const targetObjIndex = oldStateData?.findIndex(
+        (row) => row?.uniqueID === id
+      );
+
+      const targetObj = oldStateData[targetObjIndex];
+
+      if (targetObj.routeName === "important") {
+        oldStateData[targetObjIndex].isAddedAsFav =
+          !oldStateData[targetObjIndex].isAddedAsFav;
+
+        setTodoListsRedux(pathName, oldStateData);
+      } else {
+        const otherRouteTodoListData = [
+          ...getTodoListsData(targetObj.routeName),
+        ];
+        const indexToBeUpdate = otherRouteTodoListData?.findIndex(
+          (row) => row?.uniqueID === id
+        );
+        otherRouteTodoListData[indexToBeUpdate].isAddedAsFav =
+          !otherRouteTodoListData[indexToBeUpdate].isAddedAsFav;
+
+        if (!otherRouteTodoListData[indexToBeUpdate].isAddedAsFav) {
+          setTodoListsRedux(targetObj.routeName, otherRouteTodoListData);
+          setTodoListsRedux(
+            "important",
+            oldStateData.filter((_, index) => index !== targetObjIndex)
+          );
         }
       }
     }
