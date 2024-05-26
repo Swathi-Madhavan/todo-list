@@ -1,8 +1,13 @@
-.addedToFav{
-    filter: brightness(0) saturate(100%) invert(93%) sepia(80%) saturate(5779%) hue-rotate(11deg) brightness(116%) contrast(108%);
-    fill: #F7F700;
+.addedToFav {
+  filter: brightness(0) saturate(100%) invert(93%) sepia(80%) saturate(5779%)
+    hue-rotate(11deg) brightness(116%) contrast(108%);
+  fill: #f7f700;
 }
 
-.completed{
-    text-decoration: line-through;
+.completed {
+  text-decoration: line-through;
+}
+
+.addTop {
+  top: 6px;
 }

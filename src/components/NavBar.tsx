@@ -1,4 +1,4 @@
-import { useId, useMemo, useState } from "react";
+import { useId, useMemo, useState, useEffect } from "react";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -26,7 +26,9 @@ import Settings from "../assets/Settings";
 import AppBarItem from "../UIComponents/AppBarItem";
 import TodoView from "./TodoView";
 import { TodoListDataStructure } from "../model";
-import { getTodoViewData } from "../Utils/comman";
+import { useLocation } from "react-router-dom";
+import styles from "./NavBar.module.scss";
+import { useNavigate } from "react-router-dom";
 
 function getIcon(label: string) {
   switch (label) {
@@ -40,13 +42,47 @@ function getIcon(label: string) {
       return <User />;
     case "Tasks":
       return <AssignmentOutlinedIcon />;
-    case "prefix-New list":
+    case "prefix-New task":
       return <AddRoundLight />;
-    case "suffix-New list":
+    case "suffix-New task":
       return <ChatPlus />;
   }
 }
 const drawerWidth = 240;
+
+function getActivePathName(pathName: string) {
+  switch (pathName) {
+    case "/important":
+      return "Important";
+    case "/my-day":
+      return "My day";
+    case "/planned":
+      return "Planned";
+    case "/assigned-to-me":
+      return "Assigned to me";
+    case "/tasks":
+      return "Tasks";
+    default:
+      return "";
+  }
+}
+
+function changeRoute(text: string) {
+  switch (text) {
+    case "My day":
+      return "/my-day";
+    case "Important":
+      return "/important";
+    case "Planned":
+      return "/planned";
+    case "Assigned to me":
+      return "/assigned-to-me";
+    case "Tasks":
+      return "/tasks";
+    default:
+      return "";
+  }
+}
 
 export default function NavBar({
   data,
@@ -58,14 +94,18 @@ export default function NavBar({
   markAsCompletedCallBack,
   competedData,
 }: TodoListDataStructure) {
+  let { pathname } = useLocation();
+  const navigate = useNavigate();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [isClosing, setIsClosing] = useState<boolean>(false);
+  const [activePathName, setActivePathName] = useState<string>("");
 
-  const todoViewData = useMemo(() => getTodoViewData(data, 1), [data]);
-  const completedViewData = useMemo(
-    () => getTodoViewData(competedData, 1),
-    [competedData]
-  );
+  useEffect(() => {
+    setActivePathName(getActivePathName(pathname));
+  }, [pathname]);
+
+  const todoViewData = useMemo(() => data, [data]);
+
   const id = useId();
   console.log("id", id);
   const handleDrawerClose = () => {
@@ -81,6 +121,10 @@ export default function NavBar({
     if (!isClosing) {
       setMobileOpen(!mobileOpen);
     }
+  };
+
+  const handleChangeRoute = (text: string) => {
+    navigate(changeRoute(text));
   };
 
   const drawer = (
@@ -109,7 +153,12 @@ export default function NavBar({
       <List>
         {["My day", "Important", "Planned", "Assigned to me", "Tasks"].map(
           (text) => (
-            <ListItem key={text} disablePadding>
+            <ListItem
+              key={text}
+              onClick={() => handleChangeRoute(text)}
+              disablePadding
+              className={text === activePathName ? styles.active : ""}
+            >
               <ListItemButton>
                 <ListItemIcon>{getIcon(text)}</ListItemIcon>
                 <ListItemText
@@ -130,7 +179,7 @@ export default function NavBar({
       </List>
       <Divider />
       <List>
-        {["New list"].map((text) => (
+        {["New task"].map((text) => (
           <ListItem key={text} disablePadding>
             <ListItemButton onClick={() => handleOpenNewTaskCallBack(true)}>
               <ListItemIcon>{getIcon(`prefix-${text}`)}</ListItemIcon>
@@ -145,7 +194,6 @@ export default function NavBar({
                   },
                 }}
               />
-              <ListItemIcon>{getIcon(`suffix-${text}`)}</ListItemIcon>
             </ListItemButton>
           </ListItem>
         ))}
@@ -166,7 +214,7 @@ export default function NavBar({
           width: { sm: `calc(100% - ${drawerWidth}px)` },
           ml: { sm: `${drawerWidth}px` },
           "&.MuiAppBar-root": {
-            backgroundColor: appColorsData?.whiteColor,
+            backgroundColor: "#faf9f8",
             boxShadow: "unset",
           },
         }}
@@ -228,6 +276,8 @@ export default function NavBar({
       <Box
         component="main"
         sx={{
+          backgroundColor: "#faf9f8",
+          height: "100vh",
           flexGrow: 1,
           p: 3,
           width: { sm: `calc(100% - ${drawerWidth}px)` },
@@ -242,7 +292,7 @@ export default function NavBar({
           newTaskValue={newTaskValue}
           addAsFavCallBack={addAsFavCallBack}
           markAsCompletedCallBack={markAsCompletedCallBack}
-          competedData={completedViewData}
+          competedData={competedData}
         />
       </Box>
     </Box>

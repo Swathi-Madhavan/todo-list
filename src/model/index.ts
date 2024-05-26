@@ -11,6 +11,7 @@ export interface TodoItemInfo {
   isAddedAsFav: boolean;
   todoTaskText?: string;
   uniqueID: string;
+  routeName: string;
 }
 
 export type TodoViewData = Array<TodoItemInfo>;
@@ -18,8 +19,8 @@ export type TodoViewData = Array<TodoItemInfo>;
 export type DataSource = Array<TodoViewData>;
 
 export interface TodoListDataStructure {
-  data: DataSource;
-  competedData: DataSource;
+  data: TodoViewData;
+  competedData: TodoViewData;
   isOpenAddNewTask: boolean;
   handleOpenNewTaskCallBack: (status: boolean) => void;
   handleAddNewTaskChange: (newTask?: string) => void;
@@ -47,4 +48,15 @@ export interface TodoItemProp {
   newTaskValue?: string;
   addAsFavCallBack: (id: string) => void;
   markAsCompletedCallBack: (id: string) => void;
+}
+
+export interface TodoListStates {
+  todoLists: TodoViewData;
+  completedItems: TodoViewData;
+  isOpenAddNewTask: boolean;
+  newTaskValue?: string;
+}
+
+export interface CompletedItemProps {
+  completedItems: TodoViewData;
 }

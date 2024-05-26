@@ -38,10 +38,26 @@ export default function TodoItem({
     handleAddNewTaskChange(event?.target?.value);
   };
 
+  const onKeyPress = (
+    event: React.KeyboardEvent<HTMLDivElement> | undefined
+  ) => {
+    if (event?.key === "Enter") {
+      handleOpenNewTaskCallBack(false);
+    }
+  };
+
   return (
     <Accordion
       expanded={showTextField || expanded === "panel1"}
       onChange={handleChangeAccordion("panel1")}
+      sx={{
+        borderRadius: "5px",
+        boxShadow: "rgba(100, 100, 111, 0.2) 0px 7px 29px 0px",
+
+        "&.MuiAccordion-root::before": {
+          backgroundColor: "transparent",
+        },
+      }}
     >
       <AccordionSummary
         aria-controls="panel1-content"
@@ -62,6 +78,7 @@ export default function TodoItem({
             onClick={() => markAsCompletedCallBack(item?.uniqueID ?? "")}
             name="radio-buttons"
             inputProps={{ "aria-label": "A" }}
+            className={showTextField ? styles.addTop : ""}
           />
           {showTextField ? (
             <TextField
@@ -70,6 +87,7 @@ export default function TodoItem({
               variant="standard"
               onChange={handleTextFieldChange}
               value={newTaskValue}
+              onKeyDown={onKeyPress}
             />
           ) : (
             <Typography
@@ -79,14 +97,24 @@ export default function TodoItem({
                 fontSize: "17px",
                 fontWeight: "300",
                 color: appColorsData.primaryColor,
+                textTransform: "capitalize",
               }}
             >
               {item?.todoTaskText}
             </Typography>
           )}
         </Stack>
-        <IconButton onClick={() => addAsFavCallBack(item?.uniqueID ?? "")}>
-          <StarLight className={item?.isAddedAsFav ? styles.addedToFav : ""} />
+        <IconButton
+          disabled={showTextField}
+          onClick={() => addAsFavCallBack(item?.uniqueID ?? "")}
+        >
+          <StarLight
+            sx={{
+              filter:
+                "brightness(0) saturate(100%) invert(32%) sepia(33%) saturate(2318%) hue-rotate(193deg) brightness(101%) contrast(101%)",
+            }}
+            className={item?.isAddedAsFav ? styles.addedToFav : ""}
+          />
         </IconButton>
       </AccordionSummary>
       <AccordionDetails
