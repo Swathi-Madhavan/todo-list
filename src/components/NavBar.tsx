@@ -54,7 +54,7 @@ function getActivePathName(pathName: string) {
   switch (pathName) {
     case "/important":
       return "Important";
-    case "/my-day":
+    case "/":
       return "My day";
     case "/planned":
       return "Planned";
@@ -70,7 +70,7 @@ function getActivePathName(pathName: string) {
 function changeRoute(text: string) {
   switch (text) {
     case "My day":
-      return "/my-day";
+      return "/";
     case "Important":
       return "/important";
     case "Planned":
@@ -93,7 +93,7 @@ export default function NavBar({
   addAsFavCallBack,
   markAsCompletedCallBack,
   competedData,
-}: TodoListDataStructure) {
+}: Readonly<TodoListDataStructure>) {
   let { pathname } = useLocation();
   const navigate = useNavigate();
   const [mobileOpen, setMobileOpen] = useState(false);

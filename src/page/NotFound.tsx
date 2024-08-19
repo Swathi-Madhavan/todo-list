@@ -7,8 +7,9 @@ export default function NotFound() {
   const navigate = useNavigate();
 
   const reDirectToHome = () => {
-    navigate("/my-day");
+    navigate("/");
   };
+
   return (
     <Stack
       display="flex"
