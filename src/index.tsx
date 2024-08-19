@@ -8,32 +8,36 @@ import reportWebVitals from "./reportWebVitals";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import NotFound from "./page/NotFound";
 
-const router = createBrowserRouter([
-  {
-    path: "/my-day",
-    element: <App />,
-  },
-  {
-    path: "/important",
-    element: <App />,
-  },
-  {
-    path: "/planned",
-    element: <App />,
-  },
-  {
-    path: "/assigned-to-me",
-    element: <App />,
-  },
-  {
-    path: "/tasks",
-    element: <App />,
-  },
-  {
-    path: "*",
-    element: <NotFound />,
-  },
-]);
+const router = createBrowserRouter(
+  [
+    {
+      path: "/",
+      element: <App />,
+      index: true,
+    },
+    {
+      path: "/important",
+      element: <App />,
+    },
+    {
+      path: "/planned",
+      element: <App />,
+    },
+    {
+      path: "/assigned-to-me",
+      element: <App />,
+    },
+    {
+      path: "/tasks",
+      element: <App />,
+    },
+    {
+      path: "*",
+      element: <NotFound />,
+    },
+  ],
+  { basename: "/" }
+);
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
