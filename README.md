@@ -8,7 +8,7 @@
 - Optimized DOM manipulation for enhanced performance.
 - Conducted cross-browser compatibility testing to ensure consistency.
 
-Here the live preview of this calculator application. <br />
+Here the live preview of this TODO application. <br />
 https://swathimadhavan-todoapp.netlify.app
 
 I made a short video of this application functionalities and uploaded into YouTube. Please checkout the below link. <br />
