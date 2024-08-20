@@ -1,4 +1,4 @@
-import {  TodoViewData } from "./model";
+import { TodoViewData } from "./model";
 import {
   setAssignToMeTodoLists,
   setAssignedToMeCompletedItems,
@@ -40,11 +40,13 @@ export default function useApp() {
   const { assignedToMe, important, myday, planned, tasks } = cloneDeep(state);
 
   const getTodoListsData = (pathName: string) => {
+    console.log("pathName", pathName);
+
     if (pathName === "tasks") {
       return tasks.todoLists;
     } else if (pathName === "planned") {
       return planned.todoLists;
-    } else if (pathName === "my-day") {
+    } else if (pathName === "") {
       return myday.todoLists;
     } else if (pathName === "important") {
       return important.todoLists;
@@ -54,11 +56,13 @@ export default function useApp() {
   };
 
   const setTodoListsRedux = (pathName: string, todoListsData: TodoViewData) => {
+    console.log("pathName", pathName);
+
     if (pathName === "tasks") {
       dispatch(setTasksTodoLists(todoListsData));
     } else if (pathName === "planned") {
       dispatch(setPlannedTodoLists(todoListsData));
-    } else if (pathName === "my-day") {
+    } else if (pathName === "") {
       dispatch(setMydayTodoLists(todoListsData));
     } else if (pathName === "important") {
       dispatch(setImportantTodoLists(todoListsData));
@@ -68,11 +72,13 @@ export default function useApp() {
   };
 
   const getCompletedItems = (pathName: string) => {
+    console.log("pathName", pathName);
+
     if (pathName === "tasks") {
       return tasks.completedItems;
     } else if (pathName === "planned") {
       return planned.completedItems;
-    } else if (pathName === "my-day") {
+    } else if (pathName === "") {
       return myday.completedItems;
     } else if (pathName === "important") {
       return important.completedItems;
@@ -82,11 +88,13 @@ export default function useApp() {
   };
 
   const setCompletedItems = (pathName: string, todoListsData: TodoViewData) => {
+    console.log("pathName", pathName);
+
     if (pathName === "tasks") {
       dispatch(setTasksCompletedItems(todoListsData));
     } else if (pathName === "planned") {
       dispatch(setPlannedCompletedItems(todoListsData));
-    } else if (pathName === "my-day") {
+    } else if (pathName === "") {
       dispatch(setMyDayCompletedItems(todoListsData));
     } else if (pathName === "important") {
       dispatch(setImportantCompletedItems(todoListsData));
@@ -96,11 +104,13 @@ export default function useApp() {
   };
 
   const getIsOpenAddNewTask = (pathName: string) => {
+    console.log("pathName", pathName);
+
     if (pathName === "tasks") {
       return tasks.isOpenAddNewTask;
     } else if (pathName === "planned") {
       return planned.isOpenAddNewTask;
-    } else if (pathName === "my-day") {
+    } else if (pathName === "") {
       return myday.isOpenAddNewTask;
     } else if (pathName === "important") {
       return important.isOpenAddNewTask;
@@ -110,11 +120,12 @@ export default function useApp() {
   };
 
   const setIsOpenAddNewTask = (pathName: string, isOpenAddNewTask: boolean) => {
+    console.log("pathName", pathName);
     if (pathName === "tasks") {
       dispatch(setTasksIsOpenAddNewTask(isOpenAddNewTask));
     } else if (pathName === "planned") {
       dispatch(setPlannedIsOpenAddNewTask(isOpenAddNewTask));
-    } else if (pathName === "my-day") {
+    } else if (pathName === "") {
       dispatch(setMyDayIsOpenAddNewTask(isOpenAddNewTask));
     } else if (pathName === "important") {
       dispatch(setImportantIsOpenAddNewTask(isOpenAddNewTask));
@@ -124,11 +135,13 @@ export default function useApp() {
   };
 
   const getNewTaskValue = (pathName: string) => {
+    console.log("pathName", pathName);
+
     if (pathName === "tasks") {
       return tasks.newTaskValue;
     } else if (pathName === "planned") {
       return planned.newTaskValue;
-    } else if (pathName === "my-day") {
+    } else if (pathName === "") {
       return myday.newTaskValue;
     } else if (pathName === "important") {
       return important.newTaskValue;
@@ -138,11 +151,13 @@ export default function useApp() {
   };
 
   const setNewTaskValue = (pathName: string, newTaskValue: string) => {
+    console.log("pathName", pathName);
+
     if (pathName === "tasks") {
       dispatch(setTasksNewTaskValue(newTaskValue));
     } else if (pathName === "planned") {
       dispatch(setPlannedNewTaskValue(newTaskValue));
-    } else if (pathName === "my-day") {
+    } else if (pathName === "") {
       dispatch(setMyDaySliceNewTaskValue(newTaskValue));
     } else if (pathName === "important") {
       dispatch(setImportantNewTaskValue(newTaskValue));
